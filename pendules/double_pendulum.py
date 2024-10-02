@@ -8,7 +8,7 @@ from pygame.locals import K_ESCAPE, KEYDOWN, QUIT
 
 
 # CONSTANTS -------------------------------------------------------------------
-WIDTH, HEIGHT = 1280, 720
+WIDTH, HEIGHT = 1920, 1080
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
 GREEN = (0, 255, 0)
@@ -45,7 +45,7 @@ for i in range(255):
 g = 9.81
 IPS = 60
 spend = .5
-p = 1
+p = 10
 SPEED = 1
 t = SPEED / (IPS * p)
 time = 0
@@ -56,7 +56,7 @@ class Pendule:
     def __init__(self, t1=0, t2=0):
         super(Pendule, self).__init__()
         
-        self.l = 1
+        self.l = 1.5
         self.m = 1
         
         self.x0, self.y0 = WIDTH/2, HEIGHT / 2
@@ -114,7 +114,7 @@ class Pendule:
         
         if len(self.pos2) > 1:
             if len(self.pos2) >= int(IPS * spend / SPEED):
-                pygame.draw.lines(screen, (color1/2, color2/2, color3/2), False, self.pos2[-int(IPS*spend/SPEED):-1])
+                pygame.draw.lines(screen, (color1/2, color2/2, color3/2), False, self.pos2[-int(IPS*spend/SPEED):-1], width=2)
             else:
                 pygame.draw.lines(screen, (color1/2, color2/2, color3/2), False, self.pos2)
     
@@ -122,9 +122,9 @@ class Pendule:
     
     def draw_pend(self, color):
         
-        pygame.draw.circle(screen, color, (self.x1, self.y1), 8)
-        pygame.draw.circle(screen, color, (self.x2, self.y2), 8)
-        pygame.draw.lines(screen, color, False, [(self.x0, self.y0), (self.x1, self.y1), (self.x2, self.y2)], width=3)
+        pygame.draw.circle(screen, color, (self.x1, self.y1), 10)
+        pygame.draw.circle(screen, color, (self.x2, self.y2), 10)
+        pygame.draw.lines(screen, color, False, [(self.x0, self.y0), (self.x1, self.y1), (self.x2, self.y2)], width=5)
             
         
             
@@ -150,9 +150,11 @@ pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption('Pendule double')
 
-# pendule1 = Pendule(180, 180.1)
-pendules = []
+# pendule1 = Pendule(90, 180.1)
+# pendules = [Pendule(90, 180), Pendule(90, 180.1), Pendule(90, 180.2)]
+# colors = [GREEN, RED, YELLOW]
 
+pendules = []
 for i in range(1, len(ARCENCIEL), 2):
     pendules.append(Pendule(180, 180 + i/1000))
 
@@ -183,9 +185,11 @@ while running:
     for i in range(len(pendules)):
         pendules[i].update(p)
         pendules[i].draw_lines(ARCENCIEL[i])
+        pendules[i].draw_pend(ARCENCIEL[i])
+        # pendules[i].draw_lines(ARCENCIEL[i])
     
-    for i in range(len(pendules)):
-        pendules[i].draw_pend(ARCENCIEL[i*2])
+    # for i in range(len(pendules)):
+    #     pendules[i].draw_pend(ARCENCIEL[i*2])
     
     pygame.draw.circle(screen, WHITE, (WIDTH/2, HEIGHT/2), 10)
     screen.blit(FONT.render(f"Time : {round(time, 3):.3f}", True, WHITE), (10, 5))
@@ -197,4 +201,4 @@ while running:
 pygame.quit()
 
 
-# graph(pendule1)
+# graph(pendule1) 
